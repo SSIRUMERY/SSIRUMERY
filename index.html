@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSIRUMERY | 당신의 열정을 응원합니다</title>
+    <style>
+        /* =========================================
+           1. 퓨전 앤티크 전통 컬러 및 폰트
+           ========================================= */
+        :root {
+            --silk-blue: #2B4673;      
+            --silk-red: #A3314F;       
+            --hanji-bg: #FCF9F3;       
+            --antique-gold: #BF9B6F;   
+            --text-dark: #2A2A2A;      
+            --text-light: #767676;
+            
+            --font-main: 'NanumMyeongjo', 'Pretendard', 'Apple SD Gothic Neo', serif;
+            --font-logo: 'DM Serif Display', 'Gowun Batang', serif;
+        }
+
+        body {
+            margin: 0; font-family: var(--font-main);
+            background-color: var(--hanji-bg); color: var(--text-dark); line-height: 1.7;
+        }
+
+        /* =========================================
+           2. 상단 네비게이션 바
+           ========================================= */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 8vw; background: rgba(252, 249, 243, 0.95);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 2px solid #F0E6D9;
+        }
+        
+        .header-left { display: flex; align-items: center; gap: 45px; }
+        .logo { 
+            font-size: 28px; font-weight: 800; cursor: pointer; font-family: var(--font-logo);
+            background: linear-gradient(90deg, var(--silk-blue), var(--silk-red));
+            -webkit-background-clip: text; color: transparent; letter-spacing: -1px;
+        }
+
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links span { 
+            font-weight: 700; cursor: pointer; padding: 10px 0; transition: color 0.3s;
+            font-size: 15px; color: #444; position: relative;
+        }
+        .nav-links span:hover { color: var(--silk-red); }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            visibility: hidden; opacity: 0; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%) translateY(15px); background-color: white; min-width: 160px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06); border-radius: 20px; padding: 15px 0; z-index: 1; 
+            transition: all 0.3s ease; text-align: center; border: 1px solid #EAEAEA;
+        }
+        .dropdown-content a {
+            color: var(--text-light); padding: 12px 20px; text-decoration: none; display: block;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-content a:hover { background-color: rgba(163, 49, 79, 0.04); color: var(--silk-red); }
+        .dropdown:hover .dropdown-content { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* 검색창 및 장바구니 아이콘 */
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .search-container {
+            display: flex; align-items: center; background: white; border-radius: 40px;
+            padding: 6px 18px; border: 1.5px solid #EAE0C9;
+        }
+        .search-container:focus-within { border-color: var(--antique-gold); box-shadow: 0 0 0 3px rgba(191, 155, 111, 0.1); }
+        .search-container input { border: none; outline: none; padding: 8px; font-size: 14px; width: 150px; background: transparent; color: #555;}
+        .search-container button { background: none; border: none; cursor: pointer; font-size: 17px; color: var(--antique-gold); }
+
+        /* 장바구니 버튼 스타일 */
+        .cart-btn {
+            background: none; border: none; font-size: 24px; cursor: pointer; position: relative;
+            transition: transform 0.2s;
+        }
+        .cart-btn:hover { transform: scale(1.1); }
+        .cart-count {
+            position: absolute; top: -5px; right: -8px; background: var(--silk-red); color: white;
+            font-size: 11px; font-weight: bold; border-radius: 50%; padding: 2px 6px; border: 2px solid white;
+        }
+
+        /* =========================================
+           3. 메인 콘텐츠 스타일
+           ========================================= */
+        #main-content { min-height: 75vh; padding: 70px 8vw; }
+
+        .hero-section { 
+            text-align: center; margin-top: 20px; padding: 60px 20px; border-radius: 40px;
+            background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M50 20c-15 0-20 10-20 10s-5-5-10-5c-10 0-10 10-10 10a15 15 0 0 1 0 30a15 15 0 0 1 10-5c5 0 10-5 10-5s5 10 20 10s20-10 20-10s5 5 10 5a15 15 0 0 0 0-30a15 15 0 0 0-10 5c-5 0-10 5-10 5s-5-10-20-10z" fill="%23BF9B6F" fill-opacity="0.03" fill-rule="evenodd"/%3E%3C/svg%3E');
+            position: relative; overflow: hidden;
+        }
+        .hero-section::before, .hero-section::after {
+            content: '🌹'; font-size: 150px; opacity: 0.04; color: var(--silk-red); position: absolute; pointer-events: none;
+        }
+        .hero-section::before { top: -40px; left: -40px; transform: rotate(-15deg); }
+        .hero-section::after { bottom: -40px; right: -40px; transform: rotate(15deg); }
+
+        .hero-badge { display: inline-block; padding: 8px 18px; background: rgba(191, 155, 111, 0.1); color: var(--antique-gold); border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 25px; position: relative; z-index: 2; }
+        .hero-slogan { font-size: 40px; color: #1a1a1a; margin-top: 0; letter-spacing: -1.5px; font-weight: 800; line-height: 1.4; position: relative; z-index: 2; }
+
+        .traditional-divider { text-align: center; margin: 60px 0; position: relative; }
+        .traditional-divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: linear-gradient(to right, transparent, #E6DCCF 50%, transparent); z-index: 1; }
+        .traditional-divider-pattern { display: inline-block; padding: 0 15px; background-color: var(--hanji-bg); position: relative; z-index: 2; color: var(--antique-gold); font-size: 14px; }
+
+        .main-category-grid { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+        .main-category-card { flex: 1; min-width: 320px; max-width: 480px; background: white; border-radius: 35px; padding: 70px 40px; text-align: center; cursor: pointer; box-shadow: 0 15px 40px rgba(0,0,0,0.03); transition: transform 0.4s, box-shadow 0.4s; border: 2px solid transparent; position: relative; }
+        .main-category-card::after { content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px solid #F0E6D9; border-radius: 28px; pointer-events: none; }
+        .main-category-card:hover { transform: translateY(-15px); box-shadow: 0 25px 60px rgba(0,0,0,0.08); border-color: var(--antique-gold); }
+        .main-card-img { font-size: 90px; margin-bottom: 25px; opacity: 0.9; }
+        .main-card-title { font-size: 30px; font-weight: 800; color: #1a1a1a; margin-bottom: 18px; letter-spacing: -0.5px; }
+        .main-card-desc { font-size: 16px; color: var(--text-light); }
+
+        .page-title { font-size: 34px; font-weight: 800; margin-bottom: 30px; text-align: center; color: var(--silk-blue); letter-spacing: -1px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 35px; }
+        
+        .card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform 0.3s; border: 1px solid #F0F0F0; cursor: pointer; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); border-color: var(--antique-gold); }
+        .card-img { height: 230px; background: #F7F5F0; display: flex; align-items: center; justify-content: center; font-size: 65px; border-bottom: 1px solid #F0F0F0;}
+        .card-content { padding: 28px; }
+        .card-title { font-size: 21px; font-weight: bold; margin-bottom: 12px; color: #1a1a1a; }
+        .card-desc { color: var(--text-light); font-size: 14px; }
+        
+        .no-results { text-align: center; font-size: 18px; color: var(--text-light); padding: 60px 0; }
+        
+        /* =========================================
+           4. 상품 상세 & 장바구니 페이지 스타일
+           ========================================= */
+        .detail-container { max-width: 900px; margin: 0 auto; }
+        .back-btn { background: none; border: none; font-size: 15px; color: var(--text-light); cursor: pointer; margin-bottom: 30px; font-weight: 700; transition: color 0.3s; }
+        .back-btn:hover { color: var(--silk-red); }
+        
+        .detail-wrapper { 
+            display: flex; gap: 50px; flex-wrap: wrap; background: white; border-radius: 35px; 
+            padding: 50px; box-shadow: 0 15px 40px rgba(0,0,0,0.03); border: 1px solid #F0E6D9; position: relative;
+        }
+        .detail-img-box { 
+            flex: 1; min-width: 300px; min-height: 400px; background: #F7F5F0; border-radius: 25px; 
+            display: flex; align-items: center; justify-content: center; font-size: 130px; border: 1px solid #F0F0F0;
+        }
+        .detail-info-box { flex: 1; min-width: 300px; display: flex; flex-direction: column; justify-content: center; }
+        .detail-category { font-size: 14px; color: var(--antique-gold); font-weight: bold; margin-bottom: 10px; }
+        .detail-title { font-size: 32px; font-weight: 800; color: #1a1a1a; margin-top: 0; margin-bottom: 15px; letter-spacing: -1px; }
+        .detail-desc { font-size: 16px; color: var(--text-light); margin-bottom: 25px; line-height: 1.6; }
+        
+        .option-group { margin-bottom: 20px; }
+        .option-group label { display: block; font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .option-group select { 
+            width: 100%; padding: 14px 18px; border-radius: 15px; border: 1.5px solid #EAE0C9; 
+            font-size: 15px; font-family: inherit; color: #444; background: white; outline: none; 
+            transition: border-color 0.3s, box-shadow 0.3s; cursor: pointer; appearance: none;
+        }
+        .option-group select:focus { border-color: var(--antique-gold); box-shadow: 0 0 0 3px rgba(191, 155, 111, 0.1); }
+        
+        .order-btn { 
+            margin-top: 20px; padding: 18px; border: none; border-radius: 15px; background: var(--silk-blue); 
+            color: white; font-size: 18px; font-weight: bold; cursor: pointer; 
+            transition: background 0.3s, transform 0.2s; 
+        }
+        .order-btn:hover { background: var(--silk-red); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(163, 49, 79, 0.2); }
+
+        /* 장바구니 리스트 아이템 디자인 */
+        .cart-list { background: white; border-radius: 25px; padding: 30px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #F0F0F0; }
+        .cart-item { display: flex; align-items: center; border-bottom: 1px dashed #EAEAEA; padding: 25px 0; gap: 25px; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-img { font-size: 55px; background: #F7F5F0; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 20px; border: 1px solid #F0F0F0; }
+        .cart-item-info { flex: 1; }
+        .cart-item-title { font-size: 20px; font-weight: 800; color: #1a1a1a; margin: 0 0 8px 0; }
+        .cart-item-option { font-size: 14px; color: var(--text-light); margin: 0; line-height: 1.5; }
+        .cart-item-delete { background: none; border: none; color: var(--silk-red); font-size: 15px; font-weight: bold; cursor: pointer; padding: 10px; transition: opacity 0.3s; }
+        .cart-item-delete:hover { opacity: 0.7; }
+
+        footer { background-color: var(--text-dark); color: #B0B0B0; padding: 50px 8vw; text-align: center; margin-top: auto; font-size: 14px; border-top: 5px solid var(--antique-gold);}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo" onclick="goHome()">SSIRUMERY</div>
+            <nav class="nav-links">
+                <div class="dropdown">
+                    <span class="dropbtn" onclick="showMainCategory('인형')">모루 인형 ▾</span>
+                    <div class="dropdown-content">
+                        <a onclick="showCategory('씨름')">씨름 🤼‍♂️</a>
+                        <a onclick="showCategory('야구')">야구 ⚾</a>
+                        <a onclick="showCategory('농구')">농구 🏀</a>
+                        <a onclick="showCategory('축구')">축구 ⚽</a>
+                        <a onclick="showCategory('배구')">배구 🏐</a>
+                        <a onclick="showCategory('테니스')">테니스 🎾</a>
+                        <a onclick="showCategory('탁구')">탁구 🏓</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="dropbtn" onclick="showMainCategory('꽃다발')">모루 꽃다발 ▾</span>
+                    <div class="dropdown-content">
+                        <a onclick="showCategory('내맘대로')" style="color: var(--silk-red); font-weight: 800;">내맘대로 🎨</a>
+                        <a onclick="showCategory('장미')">장미 🌹</a>
+                        <a onclick="showCategory('튤립')">튤립 🌷</a>
+                        <a onclick="showCategory('데이지')">데이지 🌼</a>
+                        <a onclick="showCategory('물망초')">물망초 💠</a>
+                        <a onclick="showCategory('은방울꽃')">은방울꽃 🤍</a>
+                        <a onclick="showCategory('해바라기')">해바라기 🌻</a>
+                        <a onclick="showCategory('라벤더')">라벤더 🪻</a>
+                        <a onclick="showCategory('백합')">백합 💮</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="어떤 상품을 찾으시나요?" onkeypress="handleEnter(event)">
+                <button onclick="executeSearch()">🔍</button>
+            </div>
+            <button class="cart-btn" onclick="showCartPage()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="hero-section">
+            <span class="hero-badge">SCNU 창업동아리_SSIRUMERY </span>
+            <h1 class="hero-slogan">꽃으로 기록하는 오늘의 추억<br>마음으로 전하는 내일의 응원</h1>
+            <p style="color: var(--text-light); font-size: 18px; font-weight: 500; position: relative; z-index: 2;">원하시는 응원의 마음을 선택해주세요.</p>
+        </div>
+        <div class="traditional-divider"><span class="traditional-divider-pattern">◆ ▩ ◆ ▩ ◆ ▩ ◆ ▩ ◆ ▩ ◆</span></div>
+        <div class="main-category-grid">
+            <div class="main-category-card" onclick="showMainCategory('인형')">
+                <div class="main-card-img">🧸</div>
+                <div class="main-card-title">스포츠 모루 인형</div>
+                <div class="main-card-desc">당신의 땀방울을 단단하게 응원하는 작은 마스코트</div>
+            </div>
+            <div class="main-category-card" onclick="showMainCategory('꽃다발')">
+                <div class="main-card-img">💐</div>
+                <div class="main-card-title">모루 꽃다발</div>
+                <div class="main-card-desc">시들지 않는 비단 같은 마음을 전하는 특별한 선물</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>꽃으로 기록하는 오늘의 추억, 마음으로 전하는 내일의 응원</p>
+        <p style="margin-top: 10px; font-weight: bold; color: white;">SCNU창업동아리_SSIRUMERY</p>
+        <p style="margin-top: 25px; font-size: 12px;">© 2026 SSIRUMERY. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 상품 데이터
+        const products = [
+            { id: 1, mainCategory: '인형', title: '씨름 인형', category: '씨름', desc: '청샅바와 홍샅바 디테일을 살린 시그니처 마스코트입니다. 모래판의 뜨거운 열정을 그대로 담았습니다.', icon: '🤼‍♂️' },
+            { id: 2, mainCategory: '인형', title: '야구 인형', category: '야구', desc: '배트 or 야구공, 미니 글러브 디테일이 돋보입니다. 직관 갈 때 가방에 달기 딱 좋은 사이즈입니다.', icon: '⚾' },
+            { id: 3, mainCategory: '인형', title: '농구 인형', category: '농구', desc: '스포티한 헤어밴드와 미니 농구공을 들고 있는 귀여운 인형입니다.', icon: '🏀' },
+            { id: 4, mainCategory: '인형', title: '축구 인형', category: '축구', desc: '푸른 잔디밭 감성을 담은 미니 축구공 디테일이 매력적입니다.', icon: '⚽' },
+            { id: 5, mainCategory: '인형', title: '배구 인형', category: '배구', desc: '코트 위의 에너지를 담은 미니 배구공이 찰떡콩떡인 인형입니다..', icon: '🏐' },
+            { id: 6, mainCategory: '인형', title: '테니스 인형', category: '테니스', desc: '산뜻한 테니스 라켓과 헤어밴드로 포인트를 준 발랄한 인형입니다.', icon: '🎾' },
+            { id: 7, mainCategory: '인형', title: '탁구 인형', category: '탁구', desc: '작고 귀여운 탁구채를 야무지게 쥐고 있는 인형입니다.', icon: '🏓' },
+            
+            { id: 16, mainCategory: '꽃다발', title: '내맘대로 커스텀 꽃다발', category: '내맘대로', desc: '원하는 모루꽃 종류와 색상을 직접 조합하여 만드는 세상에 단 하나뿐인 나만의 꽃다발입니다.', icon: '🎨' },
+            { id: 8, mainCategory: '꽃다발', title: '열정을 담은 장미 꽃다발', category: '장미', desc: '시들지 않는 사랑과 열정의 상징. 뜨거운 응원의 마음을 전할 때 추천합니다.', icon: '🌹' },
+            { id: 9, mainCategory: '꽃다발', title: '설레는 마음을 담은 핑크 튤립 꽃다발', category: '튤립', desc: '봄날의 따뜻함을 닮은 파스텔 톤 튤립. 일상 속 소소한 축하 선물로 제격입니다.', icon: '🌷' },
+            { id: 10, mainCategory: '꽃다발', title: '명랑한 데이지 꽃다발', category: '데이지', desc: '귀엽고 사랑스러운 들꽃 감성으로, 보는 사람의 기분을 맑게 해줍니다.', icon: '🌼' },
+            { id: 11, mainCategory: '꽃다발', title: '과정을 잊지 마세요 물망초', category: '물망초', desc: '영원한 기억을 약속하는 푸른빛. 변치 않는 우정이나 팬심을 표현해보세요.', icon: '💠' },
+            { id: 12, mainCategory: '꽃다발', title: '순백의 은방울꽃 꽃다발', category: '은방울꽃', desc: '행복이 찾아온다는 우아한 메세지를 담은 가장 단아한 꽃다발입니다.', icon: '🤍' },
+            { id: 13, mainCategory: '꽃다발', title: '햇살 가득 해바라기', category: '해바라기', desc: '오직 당신만을 바라보는 긍정의 에너지. 슬럼프를 겪는 이에게 큰 힘이 됩니다.', icon: '🌻' },
+            { id: 14, mainCategory: '꽃다발', title: '보랏빛 향기 라벤더', category: '라벤더', desc: '마음의 안정을 주는 차분한 컬러. 긴장되는 시합 전 선물하기 좋습니다.', icon: '🪻' },
+            { id: 15, mainCategory: '꽃다발', title: '우아한 백합 꽃다발', category: '백합', desc: '순수하고 깨끗한 응원의 마음을 웅장하게 표현한 작품입니다.', icon: '💮' }
+        ];
+
+        // 장바구니 데이터 배열
+        let cartItems = [];
+
+        const mainContent = document.getElementById('main-content');
+        let currentCategory = ''; 
+
+        const homeHTML = `
+            <div class="hero-section">
+                <span class="hero-badge">SCNU창업동아리_SSIRUMERY</span>
+                <h1 class="hero-slogan">꽃으로 기록하는 오늘의 추억<br>마음으로 전하는 내일의 응원</h1>
+                <p style="color: var(--text-light); font-size: 18px; font-weight: 500; position: relative; z-index: 2;">원하시는 응원의 마음을 선택해주세요.</p>
+            </div>
+            <div class="traditional-divider"><span class="traditional-divider-pattern">◆ ▩ ◆ ▩ ◆ ▩ ◆ ▩ ◆ ▩ ◆</span></div>
+            <div class="main-category-grid">
+                <div class="main-category-card" onclick="showMainCategory('인형')">
+                    <div class="main-card-img">🧸</div>
+                    <div class="main-card-title">스포츠 모루 인형</div>
+                    <div class="main-card-desc">당신의 땀방울을 단단하게 응원하는 작은 마스코트</div>
+                </div>
+                <div class="main-category-card" onclick="showMainCategory('꽃다발')">
+                    <div class="main-card-img">💐</div>
+                    <div class="main-card-title">모루 꽃다발</div>
+                    <div class="main-card-desc">시들지 않는 꽃으로 마음을 전하는 특별한 선물</div>
+                </div>
+            </div>
+        `;
+
+        const moruColorOptions = `
+            <option value="화이트">화이트 (순백의 맑음) 🤍</option>
+            <option value="아이보리">아이보리 (포근한 감성) ☁️</option>
+            <option value="베이비핑크">베이비 핑크 (사랑스러운 무드) 🌸</option>
+            <option value="딥레드">딥 레드 (홍샅바의 열정) 🌹</option>
+            <option value="애쉬블루">애쉬 블루 (청샅바의 청명함) 🌊</option>
+            <option value="버터옐로우">버터 옐로우 (따스한 햇살) 💛</option>
+            <option value="딥그린">딥 그린 (싱그러운 에너지) 🌿</option>
+            <option value="라벤더퍼플">라벤더 퍼플 (우아한 분위기) 🍇</option>
+            <option value="샤인골드">샤인 골드 (반짝이는 스페셜) ✨</option>
+        `;
+
+        function renderCards(items) {
+            if (items.length === 0) return '<div class="no-results">해당하는 검색 결과가 없습니다. 😢</div>';
+            let html = '<div class="product-grid">';
+            items.forEach(item => {
+                html += `
+                    <div class="card" onclick="showProductDetail(${item.id})">
+                        <div class="card-img">${item.icon}</div>
+                        <div class="card-content">
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-desc">${item.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        // 상세 페이지 렌더링
+        function showProductDetail(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            let optionsHtml = '';
+
+            if (product.category === '내맘대로') {
+                optionsHtml = `
+                    <div class="option-group">
+                        <label>🌸 1. 메인 꽃 선택 (Main Flower)</label>
+                        <select class="product-option">
+                            <option value="장미">장미 🌹</option>
+                            <option value="튤립">튤립 🌷</option>
+                            <option value="해바라기">해바라기 🌻</option>
+                            <option value="백합">백합 💮</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>🌼 2. 서브 꽃 선택 (Sub Flower)</label>
+                        <select class="product-option">
+                            <option value="선택안함">선택 안함 (메인 꽃으로만 구성)</option>
+                            <option value="데이지">데이지 🌼</option>
+                            <option value="물망초">물망초 💠</option>
+                            <option value="은방울꽃">은방울꽃 🤍</option>
+                            <option value="라벤더">라벤더 🪻</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>🎨 3. 모루꽃 컬러 선택 (Moru Color)</label>
+                        <select class="product-option">
+                            ${moruColorOptions}
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>💐 4. 꽃다발 크기 (Size)</label>
+                        <select class="product-option">
+                            <option value="미니 3송이">미니 다발 (3송이 구성)</option>
+                            <option value="기본 5송이">기본 다발 (5송이 구성)</option>
+                            <option value="풍성 10송이">풍성한 다발 (10송이 구성)</option>
+                        </select>
+                    </div>
+                `;
+            } else if (product.mainCategory === '꽃다발') {
+                optionsHtml = `
+                    <div class="option-group">
+                        <label>🎨 모루꽃 컬러 선택 (Moru Color)</label>
+                        <select class="product-option">
+                            ${moruColorOptions}
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>🌸 송이 수 (Quantity)</label>
+                        <select class="product-option">
+                            <option value="1송이">1송이 (미니 포장)</option>
+                            <option value="3송이">3송이 (가벼운 선물용)</option>
+                            <option value="5송이">5송이 (기본 다발)</option>
+                            <option value="10송이">10송이 (풍성한 다발)</option>
+                        </select>
+                    </div>
+                `;
+            } else {
+                optionsHtml = `
+                    <div class="option-group">
+                        <label>🧸 동물 베이스 (Animal Base)</label>
+                        <select class="product-option">
+                            <option value="토끼 베이스">토끼 (Rabbit) 🐰</option>
+                            <option value="강아지 베이스">강아지 (Puppy) 🐶</option>
+                            <option value="곰돌이 베이스">곰돌이 (Bear) 🐻</option>
+                            <option value="고양이 베이스">고양이 (Cat) 🐱</option>
+                            <option value="코끼리 베이스">코끼리 (Elephant) 🐘</option>
+                            <option value="공룡 베이스">공룡 (Dinosaur) 🦖</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>🏷️ 수량 (Quantity)</label>
+                        <select class="product-option">
+                            <option value="1개">1개</option>
+                            <option value="2개 세트">2개 (커플 세트)</option>
+                            <option value="5개 세트">5개 (팀 세트)</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            mainContent.innerHTML = `
+                <div class="detail-container">
+                    <button class="back-btn" onclick="goBack()">← 목록으로 돌아가기</button>
+                    <div class="detail-wrapper">
+                        <div class="detail-img-box">${product.icon}</div>
+                        <div class="detail-info-box">
+                            <div class="detail-category">${product.mainCategory} > ${product.category}</div>
+                            <h2 class="detail-title">${product.title}</h2>
+                            <p class="detail-desc">${product.desc}</p>
+                            
+                            <div class="traditional-divider" style="margin: 20px 0;">
+                                <span class="traditional-divider-pattern" style="font-size: 10px;">◆ ▩ ◆</span>
+                            </div>
+                            
+                            ${optionsHtml}
+                            
+                            <button class="order-btn" onclick="addToCart(${product.id})">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            window.scrollTo(0, 0);
+        }
+
+        // [신규] 장바구니에 아이템 추가 함수
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            // 현재 선택된 옵션값들 수집
+            let selectedOptions = [];
+            const selects = document.querySelectorAll('.product-option');
+            selects.forEach(select => {
+                selectedOptions.push(select.options[select.selectedIndex].text);
+            });
+
+            // 장바구니 배열에 추가
+            cartItems.push({
+                product: product,
+                options: selectedOptions.join(' / ')
+            });
+
+            // 우측 상단 뱃지 카운트 업데이트
+            document.getElementById('cartCount').innerText = cartItems.length;
+
+            alert(`'${product.title}' 상품이 장바구니에 예쁘게 담겼습니다! 🧺`);
+        }
+
+        // [신규] 장바구니 페이지 렌더링 함수
+        function showCartPage() {
+            currentCategory = 'cart';
+            let html = `
+                <div class="detail-container">
+                    <h1 class="page-title">장바구니 🧺</h1>
+                    <div class="traditional-divider" style="margin-bottom: 40px;"><span class="traditional-divider-pattern">◆ ▩ ◆</span></div>
+            `;
+
+            if (cartItems.length === 0) {
+                html += `<div class="no-results">장바구니가 비어있습니다. 아름다운 열정을 담아보세요. 🍂</div>`;
+            } else {
+                html += `<div class="cart-list">`;
+                cartItems.forEach((item, index) => {
+                    html += `
+                        <div class="cart-item">
+                            <div class="cart-item-img">${item.product.icon}</div>
+                            <div class="cart-item-info">
+                                <h3 class="cart-item-title">${item.product.title}</h3>
+                                <p class="cart-item-option">${item.options}</p>
+                            </div>
+                            <button class="cart-item-delete" onclick="removeFromCart(${index})">삭제 ✕</button>
+                        </div>
+                    `;
+                });
+                html += `</div>
+                <div style="text-align: center; margin-top: 50px;">
+                    <button class="order-btn" style="padding: 18px 50px; font-size: 20px;" onclick="alert('주문 결제 페이지로 이동합니다! (현재는 프로토타입입니다.)')">선택 상품 주문하기</button>
+                </div>`;
+            }
+            
+            html += `</div>`;
+            mainContent.innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        // [신규] 장바구니 아이템 삭제 함수
+        function removeFromCart(index) {
+            cartItems.splice(index, 1);
+            document.getElementById('cartCount').innerText = cartItems.length;
+            showCartPage(); // 삭제 후 화면 갱신
+        }
+
+        function goHome() {
+            currentCategory = 'home';
+            mainContent.innerHTML = homeHTML;
+            window.scrollTo(0, 0);
+        }
+
+        function showMainCategory(type) {
+            currentCategory = { type: 'main', value: type };
+            const filtered = products.filter(p => p.mainCategory === type);
+            const title = type === '인형' ? '스포츠 모루 인형' : '모루 꽃다발';
+            mainContent.innerHTML = `<h1 class="page-title">${title} 전체보기</h1><div class="traditional-divider" style="margin-bottom: 40px;"><span class="traditional-divider-pattern">◆ ▩ ◆</span></div>${renderCards(filtered)}`;
+            window.scrollTo(0, 0);
+        }
+
+        function showCategory(categoryName) {
+            currentCategory = { type: 'sub', value: categoryName };
+            const filtered = products.filter(p => p.category === categoryName);
+            mainContent.innerHTML = `<h1 class="page-title">${categoryName} 컬렉션</h1><div class="traditional-divider" style="margin-bottom: 40px;"><span class="traditional-divider-pattern">◆ ▩ ◆</span></div>${renderCards(filtered)}`;
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            if (currentCategory === 'home' || !currentCategory) {
+                goHome();
+            } else if (currentCategory.type === 'main') {
+                showMainCategory(currentCategory.value);
+            } else if (currentCategory.type === 'sub') {
+                showCategory(currentCategory.value);
+            } else if (currentCategory === 'cart') {
+                goHome();
+            } else {
+                goHome();
+            }
+        }
+
+        function executeSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) { alert("검색어를 입력해주세요!"); return; }
+            currentCategory = 'search'; 
+            const filtered = products.filter(p => p.title.includes(query) || p.category.includes(query) || p.desc.includes(query));
+            mainContent.innerHTML = `<h1 class="page-title">"${query}" 검색 결과</h1><div class="traditional-divider" style="margin-bottom: 40px;"><span class="traditional-divider-pattern">◆ ▩ ◆</span></div>${renderCards(filtered)}`;
+            document.getElementById('searchInput').value = ''; 
+        }
+
+        function handleEnter(e) { if (e.key === 'Enter' || e.keyCode === 13) executeSearch(); }
+
+        window.onload = goHome;
+    </script>
+</body>
+</html>
